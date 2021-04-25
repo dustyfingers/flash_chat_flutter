@@ -10,7 +10,50 @@ class WelcomeScreen extends StatefulWidget {
   _WelcomeScreenState createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  AnimationController logoAnimationController;
+  Animation logoAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+
+    logoAnimationController = AnimationController(
+      duration: Duration(seconds: 1),
+      vsync: this,
+    );
+
+    logoAnimation = CurvedAnimation(
+        parent: logoAnimationController, curve: Curves.decelerate);
+
+    logoAnimationController.forward();
+
+    // to make the animation loop!
+    // logoAnimation.addStatusListener((status) {
+    //   print(status);
+    //   if (status == AnimationStatus.completed) {
+    //     logoAnimationController.reverse(from: 1.0);
+    //   }
+    //   if (status == AnimationStatus.dismissed) {
+    //     logoAnimationController.forward();
+    //   }
+    // });
+
+    logoAnimationController.addListener(() {
+      setState(() {});
+    });
+  }
+
+  // !!! animations use resources!
+  // !! dispose of your animation controller after using an animation or you
+  // will be leaving garbage everywhere
+  @override
+  void dispose() {
+    super.dispose();
+    logoAnimationController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +70,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   tag: 'Logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60.0,
+                    height: logoAnimation.value * 90,
                   ),
                 ),
                 Text(
