@@ -12,35 +12,35 @@ class WelcomeScreen extends StatefulWidget {
 
 class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
-  AnimationController logoAnimationController;
-  Animation logoAnimation;
+  AnimationController bgAnimationController;
+  Animation bgAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    logoAnimationController = AnimationController(
+    bgAnimationController = AnimationController(
       duration: Duration(seconds: 1),
       vsync: this,
     );
 
-    logoAnimation = CurvedAnimation(
-        parent: logoAnimationController, curve: Curves.decelerate);
+    bgAnimation = ColorTween(begin: Colors.blueGrey, end: Colors.white)
+        .animate(bgAnimationController);
 
-    logoAnimationController.forward();
+    bgAnimationController.forward();
 
     // to make the animation loop!
-    // logoAnimation.addStatusListener((status) {
+    // bgAnimation.addStatusListener((status) {
     //   print(status);
     //   if (status == AnimationStatus.completed) {
-    //     logoAnimationController.reverse(from: 1.0);
+    //     bgAnimationController.reverse(from: 1.0);
     //   }
     //   if (status == AnimationStatus.dismissed) {
-    //     logoAnimationController.forward();
+    //     bgAnimationController.forward();
     //   }
     // });
 
-    logoAnimationController.addListener(() {
+    bgAnimationController.addListener(() {
       setState(() {});
     });
   }
@@ -51,13 +51,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   @override
   void dispose() {
     super.dispose();
-    logoAnimationController.dispose();
+    bgAnimationController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: bgAnimation.value,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -70,7 +70,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'Logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: logoAnimation.value * 90,
+                    height: 90,
                   ),
                 ),
                 Text(
