@@ -3,8 +3,13 @@ import 'package:flash_chat_flutter/screens/welcome_screen.dart';
 import 'package:flash_chat_flutter/screens/login_screen.dart';
 import 'package:flash_chat_flutter/screens/registration_screen.dart';
 import 'package:flash_chat_flutter/screens/chat_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() => runApp(FlashChat());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(FlashChat());
+}
 
 class FlashChat extends StatelessWidget {
   @override
@@ -12,7 +17,7 @@ class FlashChat extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData.dark().copyWith(
         textTheme: TextTheme(
-          body1: TextStyle(color: Colors.black54),
+          body1: TextStyle(color: Colors.black),
         ),
       ),
       initialRoute: WelcomeScreen.id,
