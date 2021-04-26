@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 import 'package:flash_chat_flutter/screens/login_screen.dart';
 import 'package:flash_chat_flutter/screens/registration_screen.dart';
+import 'package:flash_chat_flutter/components/custom_button.dart';
+import 'package:flash_chat_flutter/components/animated_splash_logo.dart';
 
 class WelcomeScreen extends StatefulWidget {
   static String id = 'welcome_screen';
@@ -37,7 +38,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
   // !!! animations use resources!
   // !! dispose of your animation controller after using an animation or you
-  // will be leaving garbage everywhere
+  // ! will be leaving garbage everywhere
   @override
   void dispose() {
     super.dispose();
@@ -54,69 +55,20 @@ class _WelcomeScreenState extends State<WelcomeScreen>
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Hero(
-                  tag: 'Logo',
-                  child: Container(
-                    child: Image.asset('images/logo.png'),
-                    height: 90,
-                  ),
-                ),
-                AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'Flash Chat',
-                      textStyle: TextStyle(
-                        fontSize: 45.0,
-                        fontWeight: FontWeight.w900,
-                      ),
-                      speed: const Duration(milliseconds: 100),
-                    ),
-                  ],
-                  totalRepeatCount: 2,
-                  pause: const Duration(milliseconds: 2000),
-                ),
-              ],
+            AnimatedSplashLogo(),
+            CustomButton(
+              color: Colors.lightBlueAccent,
+              handleButtonPressed: () {
+                Navigator.pushNamed(context, LoginScreen.id);
+              },
+              text: 'Log In',
             ),
-            SizedBox(
-              height: 48.0,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                elevation: 5.0,
-                color: Colors.lightBlueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, LoginScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Log In',
-                  ),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 16.0),
-              child: Material(
-                color: Colors.blueAccent,
-                borderRadius: BorderRadius.circular(30.0),
-                elevation: 5.0,
-                child: MaterialButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, RegistrationScreen.id);
-                  },
-                  minWidth: 200.0,
-                  height: 42.0,
-                  child: Text(
-                    'Register',
-                  ),
-                ),
-              ),
+            CustomButton(
+              color: Colors.blueAccent,
+              handleButtonPressed: () {
+                Navigator.pushNamed(context, RegistrationScreen.id);
+              },
+              text: 'Register',
             ),
           ],
         ),
