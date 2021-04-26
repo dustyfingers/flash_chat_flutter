@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 import 'package:flash_chat_flutter/screens/login_screen.dart';
 import 'package:flash_chat_flutter/screens/registration_screen.dart';
@@ -28,17 +29,6 @@ class _WelcomeScreenState extends State<WelcomeScreen>
         .animate(bgAnimationController);
 
     bgAnimationController.forward();
-
-    // to make the animation loop!
-    // bgAnimation.addStatusListener((status) {
-    //   print(status);
-    //   if (status == AnimationStatus.completed) {
-    //     bgAnimationController.reverse(from: 1.0);
-    //   }
-    //   if (status == AnimationStatus.dismissed) {
-    //     bgAnimationController.forward();
-    //   }
-    // });
 
     bgAnimationController.addListener(() {
       setState(() {});
@@ -73,12 +63,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     height: 90,
                   ),
                 ),
-                Text(
-                  'Flash Chat',
-                  style: TextStyle(
-                    fontSize: 45.0,
-                    fontWeight: FontWeight.w900,
-                  ),
+                AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Flash Chat',
+                      textStyle: TextStyle(
+                        fontSize: 45.0,
+                        fontWeight: FontWeight.w900,
+                      ),
+                      speed: const Duration(milliseconds: 100),
+                    ),
+                  ],
+                  totalRepeatCount: 2,
+                  pause: const Duration(milliseconds: 2000),
                 ),
               ],
             ),
