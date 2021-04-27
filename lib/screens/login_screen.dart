@@ -109,7 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             email: email, password: password);
 
                     if (userCreds != null) {
-                      showSpinner = false;
+                      setState(() {
+                        showSpinner = false;
+                      });
                       Navigator.pushNamed(context, ChatScreen.id);
                     }
                   } catch (err) {
