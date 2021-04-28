@@ -20,14 +20,27 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   void initState() {
     super.initState();
-
     getCurrentUser();
+    messageStream();
   }
 
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
       if (user != null) currentUser = user;
+    } catch (err) {
+      print(err);
+    }
+  }
+
+  void messageStream() async {
+    try {
+      await for (var snapshot
+          in _firestore.collection('messages').snapshots()) {
+        for (var message in snapshot.docs) {
+          print(message.data());
+        }
+      }
     } catch (err) {
       print(err);
     }
