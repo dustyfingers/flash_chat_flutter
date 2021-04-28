@@ -5,11 +5,17 @@ import 'message_bubble.dart';
 
 class MessageStream extends StatelessWidget {
   final _firestore = FirebaseFirestore.instance;
+  String currentUserEmail;
+
+  MessageStream({@required this.currentUserEmail});
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: _firestore.collection('messages').snapshots(),
+      stream: _firestore
+          .collection('messages')
+          .orderBy('created_at', descending: true)
+          .snapshots(),
       builder: (context, snapshot) {
         List<MessageBubble> messageBubbles = [];
 
@@ -24,13 +30,17 @@ class MessageStream extends StatelessWidget {
           for (var message in messages) {
             final String messageText = message.data()['text'].toString();
             final String messageSender = message.data()['sender'];
-            final messageBubble =
-                MessageBubble(text: messageText, sender: messageSender);
+            final messageBubble = MessageBubble(
+              text: messageText,
+              sender: messageSender,
+              currentUser: currentUserEmail,
+            );
             messageBubbles.add(messageBubble);
           }
 
           return Expanded(
             child: ListView(
+              reverse: true,
               padding: EdgeInsets.symmetric(
                 horizontal: 10.0,
                 vertical: 20.0,

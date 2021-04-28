@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
 
+import 'package:flash_chat_flutter/constants.dart';
+
 class MessageBubble extends StatelessWidget {
   final String sender;
   final String text;
+  final String currentUser;
 
-  MessageBubble({@required this.sender, @required this.text});
+  MessageBubble({
+    @required this.sender,
+    @required this.text,
+    @required this.currentUser,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: sender == currentUser
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Text(
             sender,
             style: TextStyle(
               fontSize: 12.0,
-              color: Colors.black54,
+              color: Colors.black45,
             ),
           ),
           Material(
-            borderRadius: BorderRadius.circular(30.0),
-            elevation: 4.0,
-            color: Colors.lightBlueAccent,
+            borderRadius: sender == currentUser
+                ? kCurrentUserSenderBorderRadius
+                : kOtherSenderBorderRadius,
+            elevation: 3.0,
+            color:
+                sender == currentUser ? Colors.lightBlueAccent : Colors.white,
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 15.0,
@@ -32,7 +44,7 @@ class MessageBubble extends StatelessWidget {
               child: Text(
                 text,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: sender == currentUser ? Colors.white : Colors.black54,
                   fontSize: 15.0,
                 ),
               ),

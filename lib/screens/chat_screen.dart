@@ -23,26 +23,12 @@ class _ChatScreenState extends State<ChatScreen> {
   void initState() {
     super.initState();
     getCurrentUser();
-    messageStream();
   }
 
   void getCurrentUser() {
     try {
       final user = _auth.currentUser;
       if (user != null) currentUser = user;
-    } catch (err) {
-      print(err);
-    }
-  }
-
-  void messageStream() async {
-    try {
-      await for (var snapshot
-          in _firestore.collection('messages').snapshots()) {
-        for (var message in snapshot.docs) {
-          print(message.data());
-        }
-      }
     } catch (err) {
       print(err);
     }
@@ -69,7 +55,7 @@ class _ChatScreenState extends State<ChatScreen> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            MessageStream(),
+            MessageStream(currentUserEmail: currentUser.email),
             Container(
               decoration: kMessageContainerDecoration,
               child: Row(
@@ -90,6 +76,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         {
                           'sender': currentUser.email,
                           'text': messageText,
+                          'created_at': FieldValue.serverTimestamp()
                         },
                       );
                       messageTextController.clear();
